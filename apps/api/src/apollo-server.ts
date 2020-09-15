@@ -1,7 +1,10 @@
 import { ApolloServer, gql } from 'apollo-server-express';
 import { photos, tags, users } from './data';
+import { GraphQLScalarType } from 'graphql';
+import { IntValueNode } from 'graphql/language/ast';
 
 const typeDefs = gql`
+  scalar DateTime
   enum PhotoCategory {
     SELFIE
     PORTRAIT
@@ -24,6 +27,7 @@ const typeDefs = gql`
     category: PhotoCategory
     postedBy: User!
     taggedUsers: [User!]!
+    created: DateTime!
   }
   type Query {
     totalPhotos: Int!
@@ -50,6 +54,7 @@ const resolvers = {
       const newPhoto = {
         id: id++,
         ...args.input,
+        created: new Date(),
       };
       photos.push(args);
       return newPhoto;
@@ -77,6 +82,13 @@ const resolvers = {
         .map((tag) => tag.photoID)
         .map((photoId) => photos.find((p) => p.id === photoId)),
   },
+  DateTime: new GraphQLScalarType({
+    name: `DateTime`,
+    description: `A valid date time value`,
+    parseValue: (value) => new Date(value),
+    serialize: (value) => new Date(value).toISOString(),
+    parseLiteral: (ast: IntValueNode) => ast.value,
+  }),
 };
 
 export const apolloServer = new ApolloServer({

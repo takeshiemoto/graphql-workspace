@@ -1,7 +1,10 @@
 import * as express from 'express';
 import { apolloServer } from './apollo-server';
+const expressPlayground = require(`graphql-playground-middleware-express`)
+  .default;
 
 const app = express();
+app.get(`/playground`, expressPlayground({ endpoint: `/graphql` }));
 apolloServer.applyMiddleware({ app });
 
 const port = process.env.port || 3333;

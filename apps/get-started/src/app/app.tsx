@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Message } from '@graphql-workspace/api-interfaces';
+import React, { useEffect } from 'react';
 
 export const App = () => {
-  const [m, setMessage] = useState<Message>({ message: '' });
-
+  const query = `{ totalPhotos }`;
   useEffect(() => {
-    fetch('/api')
+    fetch('/graphql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query }),
+    })
       .then((r) => r.json())
-      .then(setMessage);
-  }, []);
+      .then(console.log);
+  });
 
   return (
-    <>
-      <div style={{ textAlign: 'center' }}>
-        <h1>Welcome to get-started!</h1>
-        <img
-          width="450"
-          src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-        />
-      </div>
-      <div>{m.message}</div>
-    </>
+    <div style={{ textAlign: 'center' }}>
+      <h1>Welcome to get-started!</h1>
+    </div>
   );
 };
 

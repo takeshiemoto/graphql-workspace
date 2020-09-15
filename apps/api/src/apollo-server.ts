@@ -1,5 +1,5 @@
 import { ApolloServer, gql } from 'apollo-server-express';
-import { photos, users } from './data';
+import { photos, tags, users } from './data';
 
 const typeDefs = gql`
   enum PhotoCategory {
@@ -14,6 +14,7 @@ const typeDefs = gql`
     name: String
     avatar: String
     postedPhotos: [Photo!]!
+    inPhotos: [Photo!]!
   }
   type Photo {
     id: ID!
@@ -22,6 +23,7 @@ const typeDefs = gql`
     description: String
     category: PhotoCategory
     postedBy: User!
+    taggedUsers: [User!]!
   }
   type Query {
     totalPhotos: Int!
@@ -59,11 +61,21 @@ const resolvers = {
     postedBy: (parent) => {
       return users.find((u) => u.githubLogin === parent.githubUser);
     },
+    taggedUsers: (parent) =>
+      tags
+        .filter((tag) => tag.photoID === parent.id)
+        .map((tag) => tag.userID)
+        .map((userId) => users.find((u) => u.githubLogin === userId)),
   },
   User: {
     postedPhotos: (parent) => {
       return photos.filter((p) => p.githubUser === parent.githubLogin);
     },
+    inPhotos: (parent) =>
+      tags
+        .filter((tag) => tag.userID === parent.id)
+        .map((tag) => tag.photoID)
+        .map((photoId) => photos.find((p) => p.id === photoId)),
   },
 };
 

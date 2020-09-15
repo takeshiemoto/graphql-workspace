@@ -1,4 +1,5 @@
 import { ApolloServer, gql } from 'apollo-server-express';
+import { photos, users } from './data';
 
 const typeDefs = gql`
   enum PhotoCategory {
@@ -8,12 +9,19 @@ const typeDefs = gql`
     LANDSCAPE
     GRAPHIC
   }
+  type User {
+    githubLogin: ID!
+    name: String
+    avatar: String
+    postedPhotos: [Photo!]!
+  }
   type Photo {
     id: ID!
     url: String!
     name: String!
     description: String
     category: PhotoCategory
+    postedBy: User!
   }
   type Query {
     totalPhotos: Int!
@@ -30,10 +38,10 @@ const typeDefs = gql`
 `;
 
 let id = 0;
-const photos = [];
 const resolvers = {
   Query: {
     totalPhotos: () => photos.length,
+    allPhotos: () => photos,
   },
   Mutation: {
     postPhoto(parent, args) {
@@ -48,6 +56,14 @@ const resolvers = {
   Photo: {
     // トリビアリゾルバ
     url: (parent) => `http://example.com/img/${parent.id}`,
+    postedBy: (parent) => {
+      return users.find((u) => u.githubLogin === parent.githubUser);
+    },
+  },
+  User: {
+    postedPhotos: (parent) => {
+      return photos.filter((p) => p.githubUser === parent.githubLogin);
+    },
   },
 };
 

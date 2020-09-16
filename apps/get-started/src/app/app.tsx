@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
+import ApolloClient, { gql } from 'apollo-boost';
 
 export const App = () => {
-  const query = `{ totalPhotos }`;
+  const client = new ApolloClient({ uri: 'http://localhost:4200/graphql' });
+  const query = gql`
+    query listUsers {
+      totalPhotos
+      totalUsers
+    }
+  `;
   useEffect(() => {
-    fetch('/graphql', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query }),
-    })
-      .then((r) => r.json())
-      .then(console.log);
+    client.query({ query }).then(console.log).catch(console.error);
   });
 
   return (

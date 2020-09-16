@@ -31,6 +31,7 @@ const typeDefs = gql`
   }
   type Query {
     totalPhotos: Int!
+    totalUsers: Int!
     allPhotos: [Photo]!
   }
   input PostPhotoInput {
@@ -47,6 +48,7 @@ let id = 0;
 const resolvers = {
   Query: {
     totalPhotos: () => photos.length,
+    totalUsers: () => users.length,
     allPhotos: () => photos,
   },
   Mutation: {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
+import UserList from './components/UserList';
 
 export const ROOT_QUERY = gql`
   query allUsers {
@@ -15,38 +16,18 @@ export const ROOT_QUERY = gql`
 export const App = () => {
   return (
     <Query query={ROOT_QUERY}>
-      {({ data, loading }) =>
+      {({ data, loading, refetch }) =>
         loading ? (
           <p>Loading...</p>
         ) : (
-          <UserList count={data.totalUsers} users={data.allUsers} />
+          <UserList
+            count={data.totalUsers}
+            users={data.allUsers}
+            reFetchUsers={refetch}
+          />
         )
       }
     </Query>
-  );
-};
-
-interface UserListProps {
-  count: number;
-  users: Array<{
-    githubLogin: string;
-    name: string;
-    avatar: string;
-  }>;
-}
-const UserList = ({ count, users }: UserListProps) => {
-  return (
-    <>
-      <p>{count} Users</p>
-      <ul>
-        {users.map((user) => (
-          <li key={user.githubLogin}>
-            <img src={user.avatar} width={48} height={48} alt={''} />
-            {user.name}
-          </li>
-        ))}
-      </ul>
-    </>
   );
 };
 

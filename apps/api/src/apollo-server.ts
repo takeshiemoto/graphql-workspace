@@ -33,6 +33,7 @@ const typeDefs = gql`
     totalPhotos: Int!
     totalUsers: Int!
     allPhotos: [Photo]!
+    allUsers: [User]!
   }
   input PostPhotoInput {
     name: String!
@@ -50,6 +51,7 @@ const resolvers = {
     totalPhotos: () => photos.length,
     totalUsers: () => users.length,
     allPhotos: () => photos,
+    allUsers: () => users,
   },
   Mutation: {
     postPhoto(parent, args) {

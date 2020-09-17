@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { apolloServer } from './apollo-server';
+import { apolloServer } from './app/apollo-server';
 const expressPlayground = require(`graphql-playground-middleware-express`)
   .default;
 

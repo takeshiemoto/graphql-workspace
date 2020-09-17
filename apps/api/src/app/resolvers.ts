@@ -1,52 +1,9 @@
-import { ApolloServer, gql } from 'apollo-server-express';
-import { photos, tags, users } from './data';
+import { photos, tags, users } from '../data';
 import { GraphQLScalarType } from 'graphql';
 import { IntValueNode } from 'graphql/language/ast';
 
-const typeDefs = gql`
-  scalar DateTime
-  enum PhotoCategory {
-    SELFIE
-    PORTRAIT
-    ACTION
-    LANDSCAPE
-    GRAPHIC
-  }
-  type User {
-    githubLogin: ID!
-    name: String
-    avatar: String
-    postedPhotos: [Photo!]!
-    inPhotos: [Photo!]!
-  }
-  type Photo {
-    id: ID!
-    url: String!
-    name: String!
-    description: String
-    category: PhotoCategory
-    postedBy: User!
-    taggedUsers: [User!]!
-    created: DateTime!
-  }
-  type Query {
-    totalPhotos: Int!
-    totalUsers: Int!
-    allPhotos: [Photo]!
-    allUsers: [User]!
-  }
-  input PostPhotoInput {
-    name: String!
-    category: PhotoCategory = PORTRAIT
-    description: String
-  }
-  type Mutation {
-    postPhoto(input: PostPhotoInput!): Photo!
-  }
-`;
-
 let id = 0;
-const resolvers = {
+export const resolvers = {
   Query: {
     totalPhotos: () => photos.length,
     totalUsers: () => users.length,
@@ -94,8 +51,3 @@ const resolvers = {
     parseLiteral: (ast: IntValueNode) => ast.value,
   }),
 };
-
-export const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-});

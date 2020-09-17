@@ -1,8 +1,8 @@
+import { v4 as uuidv4 } from 'uuid';
 import { photos, tags, users } from '../data';
 import { GraphQLScalarType } from 'graphql';
 import { IntValueNode } from 'graphql/language/ast';
 
-let id = 0;
 export const resolvers = {
   Query: {
     totalPhotos: () => photos.length,
@@ -13,7 +13,7 @@ export const resolvers = {
   Mutation: {
     postPhoto(parent, args) {
       const newPhoto = {
-        id: id++,
+        id: uuidv4(),
         ...args.input,
         created: new Date(),
       };

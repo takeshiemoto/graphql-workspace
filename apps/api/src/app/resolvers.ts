@@ -17,7 +17,7 @@ export const resolvers = {
         ...args.input,
         created: new Date(),
       };
-      photos.push(args);
+      photos.push(newPhoto);
       return newPhoto;
     },
   },

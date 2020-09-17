@@ -32,7 +32,8 @@
   },
   "lint-staged": {
     "*.{js,json,css,scss,md,ts,tsx,html,graphql}": [
-      "yarn format --uncommitted"
+      "yarn affected:lint  -- --uncommitted --parallel -- --fix",
+      "yarn format:write -- --uncommitted"
     ]
   },
   "private": true,

@@ -15,15 +15,23 @@ const expressPlayground = require(`graphql-playground-middleware-express`)
 const start = async () => {
   const app = express();
 
-  const host = 'mongodb://localhost:27017';
-  const client = await MongoClient.connect(host, { useNewUrlParser: true });
+  const client = await MongoClient.connect(process.env.DB_HOST, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   const db = client.db();
-  const context = { db };
 
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
-    context,
+    context: async ({ req }) => {
+      const githubToken = req.headers.authorization;
+      const currentUser = await db.collection('users').findOne({ githubToken });
+      return {
+        db,
+        currentUser,
+      };
+    },
   });
 
   apolloServer.applyMiddleware({ app });

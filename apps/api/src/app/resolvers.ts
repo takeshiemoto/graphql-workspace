@@ -22,7 +22,6 @@ export const resolvers = {
     },
   },
   Photo: {
-    // トリビアリゾルバ
     url: (parent) => `http://example.com/img/${parent.id}`,
     postedBy: (parent) => {
       return users.find((u) => u.githubLogin === parent.githubUser);

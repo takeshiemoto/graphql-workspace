@@ -1,7 +1,6 @@
 import * as express from 'express';
 import * as fs from 'fs';
 import * as MongoClient from 'mongodb';
-import { Request, Response } from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { resolvers } from './app/resolvers';
 

@@ -1,4 +1,15 @@
-import { gql } from 'apollo-boost';
+import { gql } from '@apollo/client';
+
+export const ALL_USER = gql`
+  query allUsers {
+    totalUsers
+    allUsers {
+      githubLogin
+      name
+      avatar
+    }
+  }
+`;
 
 export const ROOT_QUERY = gql`
   query allUsers {

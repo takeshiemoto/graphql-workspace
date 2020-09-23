@@ -1,23 +1,28 @@
 import React from 'react';
-import { Query } from 'react-apollo';
+import { ALL_USER } from './queries';
+import { useQuery } from '@apollo/client';
+import { User } from '@graphql-workspace/api-interfaces';
 import UserList from './components/UserList';
-import { ROOT_QUERY } from './queries';
+
+interface AllUserData {
+  totalUsers: number;
+  allUsers: User[];
+}
 
 export const App = () => {
+  const { loading, error, data, refetch } = useQuery<AllUserData>(ALL_USER);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error</div>;
+  }
   return (
-    <Query query={ROOT_QUERY}>
-      {({ data, loading, refetch }) =>
-        loading ? (
-          <p>Loading...</p>
-        ) : (
-          <UserList
-            count={data.totalUsers}
-            users={data.allUsers}
-            reFetchUsers={refetch}
-          />
-        )
-      }
-    </Query>
+    <UserList
+      count={data.totalUsers}
+      users={data.allUsers}
+      reFetchUsers={refetch}
+    />
   );
 };
 

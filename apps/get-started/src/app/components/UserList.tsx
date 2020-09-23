@@ -1,17 +1,12 @@
 import React from 'react';
-import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
 import UserListItem from './UserListItem';
-import { ADD_FAKE_USERS_MUTATION, ROOT_QUERY } from '../queries';
+import { User } from '@graphql-workspace/api-interfaces';
 
 export interface UserListProps {
   count: number;
-  users: Array<{
-    githubLogin: string;
-    name: string;
-    avatar: string;
-  }>;
-  reFetchUsers: () => void;
+  users: User[];
+  reFetchUsers?: () => void;
 }
 
 const StyledUserList = styled.div`
@@ -23,7 +18,7 @@ export const UserList = ({ count, reFetchUsers, users }: UserListProps) => {
     <StyledUserList>
       <p>{count} Users</p>
       <button onClick={() => reFetchUsers()}>ReFetch Users</button>
-      <Mutation
+      {/*<Mutation
         mutation={ADD_FAKE_USERS_MUTATION}
         refetchQueries={[{ query: ROOT_QUERY }]}
         variables={{ count: 1 }}
@@ -31,7 +26,7 @@ export const UserList = ({ count, reFetchUsers, users }: UserListProps) => {
         {(addFakeUsers) => (
           <button onClick={addFakeUsers}>Add Fake User</button>
         )}
-      </Mutation>
+      </Mutation>*/}
       <div>
         {users.map(({ avatar, githubLogin, name }) => (
           <UserListItem avatar={avatar} name={name} key={githubLogin} />

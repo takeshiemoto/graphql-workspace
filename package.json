@@ -38,6 +38,7 @@
   },
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.2.0",
     "@types/mongodb": "^3.5.27",
     "@types/node-fetch": "^2.5.7",
     "@types/uuid": "^8.3.0",

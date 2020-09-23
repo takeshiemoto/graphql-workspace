@@ -2,7 +2,7 @@ import React from 'react';
 import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
 import UserListItem from './UserListItem';
-import { ADD_FAKE_USERS_MUTATION, ROOT_QUERY } from '../app';
+import { ADD_FAKE_USERS_MUTATION, ROOT_QUERY } from '../queries';
 
 export interface UserListProps {
   count: number;

@@ -1,16 +1,12 @@
 import React from 'react';
-import { ALL_USER } from './queries';
+import { ALL_USER, AllUserQueryType } from './queries';
 import { useQuery } from '@apollo/client';
-import { User } from '@graphql-workspace/api-interfaces';
 import UserList from './components/UserList';
 
-interface AllUserData {
-  totalUsers: number;
-  allUsers: User[];
-}
-
 export const App = () => {
-  const { loading, error, data, refetch } = useQuery<AllUserData>(ALL_USER);
+  const { loading, error, data, refetch } = useQuery<AllUserQueryType>(
+    ALL_USER
+  );
   if (loading) {
     return <div>Loading...</div>;
   }

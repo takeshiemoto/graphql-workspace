@@ -1,12 +1,26 @@
 import React from 'react';
-import styled from 'styled-components';
-import UserListItem from './UserListItem';
 import { User } from '@graphql-workspace/api-interfaces';
+import { useMutation } from '@apollo/client';
+import { OperationVariables } from '@apollo/client/core';
+import { ApolloQueryResult } from '@apollo/client/core/types';
+import styled from 'styled-components';
+import {
+  ADD_FAKE_USERS_MUTATION,
+  AddUsersQueryTypes,
+  AllUserQueryType,
+} from '../queries';
+import UserListItem from './UserListItem';
 
 export interface UserListProps {
   count: number;
   users: User[];
-  reFetchUsers?: () => void;
+  reFetchUsers?: (
+    variables?: Partial<OperationVariables>
+  ) => Promise<ApolloQueryResult<AllUserQueryType>>;
+}
+
+interface AddUsersVariables {
+  count: number;
 }
 
 const StyledUserList = styled.div`
@@ -14,19 +28,16 @@ const StyledUserList = styled.div`
 `;
 
 export const UserList = ({ count, reFetchUsers, users }: UserListProps) => {
+  const [addFakeUsers] = useMutation<AddUsersQueryTypes, AddUsersVariables>(
+    ADD_FAKE_USERS_MUTATION
+  );
   return (
     <StyledUserList>
       <p>{count} Users</p>
       <button onClick={() => reFetchUsers()}>ReFetch Users</button>
-      {/*<Mutation
-        mutation={ADD_FAKE_USERS_MUTATION}
-        refetchQueries={[{ query: ROOT_QUERY }]}
-        variables={{ count: 1 }}
-      >
-        {(addFakeUsers) => (
-          <button onClick={addFakeUsers}>Add Fake User</button>
-        )}
-      </Mutation>*/}
+      <button onClick={() => addFakeUsers({ variables: { count: 1 } })}>
+        Add Fake User
+      </button>
       <div>
         {users.map(({ avatar, githubLogin, name }) => (
           <UserListItem avatar={avatar} name={name} key={githubLogin} />

@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-import { photos, tags, users } from '../data';
 import { GraphQLScalarType } from 'graphql';
 import { IntValueNode } from 'graphql/language/ast';
 import { authorizeWithGitHub } from './helpers';
@@ -99,25 +98,10 @@ export const resolvers = {
     id: (parent) => parent.id || parent._id,
     url: (parent) => `/img/photos/${parent._id}.jpg`,
     postedBy: (parent, args, { db }) => {
-      console.log(parent);
       return db.collection(`users`).findOne({ githubLogin: parent.userID });
     },
-    taggedUsers: (parent) =>
-      tags
-        .filter((tag) => tag.photoID === parent.id)
-        .map((tag) => tag.userID)
-        .map((userId) => users.find((u) => u.githubLogin === userId)),
   },
-  User: {
-    postedPhotos: (parent) => {
-      return photos.filter((p) => p.githubUser === parent.githubLogin);
-    },
-    inPhotos: (parent) =>
-      tags
-        .filter((tag) => tag.userID === parent.id)
-        .map((tag) => tag.photoID)
-        .map((photoId) => photos.find((p) => p.id === photoId)),
-  },
+  User: {},
   DateTime: new GraphQLScalarType({
     name: `DateTime`,
     description: `A valid date time value`,

@@ -31,16 +31,12 @@ export const resolvers = {
     async githubAuth(parent, { code }, { db }) {
       const {
         message,
-        // eslint-disable-next-line @typescript-eslint/camelcase
         access_token,
-        // eslint-disable-next-line @typescript-eslint/camelcase
         avatar_url,
         login,
         name,
       } = await authorizeWithGitHub({
-        // eslint-disable-next-line @typescript-eslint/camelcase
         client_id: process.env.CLIENT_ID,
-        // eslint-disable-next-line @typescript-eslint/camelcase
         client_secret: process.env.CLIENT_SECRET,
         code,
       });
@@ -52,9 +48,7 @@ export const resolvers = {
       const latestUserInfo = {
         name,
         githubLogin: login,
-        // eslint-disable-next-line @typescript-eslint/camelcase
         githubToken: access_token,
-        // eslint-disable-next-line @typescript-eslint/camelcase
         avatar: avatar_url,
       };
 
@@ -65,7 +59,6 @@ export const resolvers = {
         .replaceOne({ githubLogin: login }, latestUserInfo, { upsert: true });
       return {
         user,
-        // eslint-disable-next-line @typescript-eslint/camelcase
         token: access_token,
       };
     },

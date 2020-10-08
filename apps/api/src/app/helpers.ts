@@ -29,12 +29,10 @@ export const requestGitHubUserAccount = (token: string) => {
 };
 
 export const authorizeWithGitHub = async (credentials: Credentials) => {
-  // eslint-disable-next-line @typescript-eslint/camelcase
   const { access_token } = await requestGitHubToken(credentials);
   const githubUser = await requestGitHubUserAccount(access_token);
   return {
     ...githubUser,
-    // eslint-disable-next-line @typescript-eslint/camelcase
     access_token,
   };
 };

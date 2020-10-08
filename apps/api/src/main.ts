@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as fs from 'fs';
 import * as MongoClient from 'mongodb';
+import expressPlayground from 'graphql-playground-middleware-express';
 import { ApolloServer } from 'apollo-server-express';
 import { resolvers } from './app/resolvers';
 
@@ -8,9 +9,6 @@ export const typeDefs = fs.readFileSync(
   process.cwd() + '/apps/api/src/typeDefs.graphql',
   'utf8'
 );
-
-const expressPlayground = require(`graphql-playground-middleware-express`)
-  .default;
 
 const start = async () => {
   const app = express();

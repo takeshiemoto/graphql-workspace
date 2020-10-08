@@ -61,14 +61,21 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "apps/get-started/tsconfig.app.json",
-              "apps/get-started/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/get-started/**/*"]
+            "lintFilePatterns": [
+              "apps/get-started/**/*.js",
+              "apps/get-started/**/*.jsx",
+              "apps/get-started/**/*.ts",
+              "apps/get-started/**/*.tsx",
+              "node_modules/@nrwl/react/typings/cssmodule.d.ts",
+              "node_modules/@nrwl/react/typings/image.d.ts",
+              "apps/get-started/**/*.spec.ts",
+              "apps/get-started/**/*.spec.tsx",
+              "apps/get-started/**/*.spec.js",
+              "apps/get-started/**/*.spec.jsx",
+              "apps/get-started/**/*.d.ts"
+            ]
           }
         },
         "test": {
@@ -99,11 +106,12 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "linter": "eslint",
-            "tsConfig": ["apps/get-started-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/get-started-e2e/**/*"]
+            "lintFilePatterns": [
+              "apps/get-started-e2e/src/**/*.ts",
+              "apps/get-started-e2e/src/**/*.js"
+            ]
           }
         }
       }
@@ -144,14 +152,13 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "apps/api/tsconfig.app.json",
-              "apps/api/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/api/**/*"]
+            "lintFilePatterns": [
+              "apps/api/**/*.ts",
+              "apps/api/**/*.spec.ts",
+              "apps/api/**/*.d.ts"
+            ]
           }
         },
         "test": {
@@ -170,14 +177,16 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "libs/api-interfaces/tsconfig.lib.json",
-              "libs/api-interfaces/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/api-interfaces/**/*"]
+            "lintFilePatterns": [
+              "libs/api-interfaces/**/*.ts",
+              "libs/api-interfaces/**/*.spec.ts",
+              "libs/api-interfaces/**/*.spec.tsx",
+              "libs/api-interfaces/**/*.spec.js",
+              "libs/api-interfaces/**/*.spec.jsx",
+              "libs/api-interfaces/**/*.d.ts"
+            ]
           }
         },
         "test": {

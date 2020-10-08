@@ -5,10 +5,7 @@ import expressPlayground from 'graphql-playground-middleware-express';
 import { ApolloServer } from 'apollo-server-express';
 import { resolvers } from './app/resolvers';
 
-export const typeDefs = fs.readFileSync(
-  process.cwd() + '/apps/api/src/typeDefs.graphql',
-  'utf8'
-);
+export const typeDefs = fs.readFileSync('schema.graphql', 'utf8');
 
 const start = async () => {
   const app = express();

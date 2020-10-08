@@ -2,8 +2,9 @@ import fetch from 'node-fetch';
 import { GraphQLScalarType } from 'graphql';
 import { IntValueNode } from 'graphql/language/ast';
 import { authorizeWithGitHub } from './helpers';
+import { Resolvers } from './types/resplver-types';
 
-export const resolvers = {
+export const resolvers: Resolvers = {
   Query: {
     me: (parent, args, { currentUser }) => currentUser,
     totalPhotos: (parent, args, { db }) =>
@@ -15,19 +16,6 @@ export const resolvers = {
     allUsers: (parent, args, { db }) => db.collection('users').find().toArray(),
   },
   Mutation: {
-    async postPhoto(parent, args, { db, currentUser }) {
-      if (!currentUser) {
-        throw new Error('only an authorized user can post a photo');
-      }
-      const newPhoto = {
-        ...args.input,
-        userID: currentUser.githubLogin,
-        created: new Date(),
-      };
-      const { insertedIds } = await db.collection('photos').insert(newPhoto);
-      newPhoto.id = insertedIds[0];
-      return newPhoto;
-    },
     async githubAuth(parent, { code }, { db }) {
       const {
         message,
@@ -88,11 +76,8 @@ export const resolvers = {
     },
   },
   Photo: {
-    id: (parent) => parent.id || parent._id,
-    url: (parent) => `/img/photos/${parent._id}.jpg`,
-    postedBy: (parent, args, { db }) => {
-      return db.collection(`users`).findOne({ githubLogin: parent.userID });
-    },
+    id: (parent) => parent.id,
+    url: (parent) => `/img/photos/${parent.id}.jpg`,
   },
   User: {},
   DateTime: new GraphQLScalarType({

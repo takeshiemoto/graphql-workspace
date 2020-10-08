@@ -9,11 +9,11 @@ enum PhotoCategory {
 }
 
 type User {
-githubLogin: ID!
-name: String
-avatar: String
-postedPhotos: [Photo!]!
-inPhotos: [Photo!]!
+  githubLogin: ID!
+  name: String
+  avatar: String
+  postedPhotos: [Photo!]!
+  inPhotos: [Photo!]!
 }
 
 type Photo {

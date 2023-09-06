@@ -6,7 +6,9 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "hasura:console": "hasura console --project hasura"
+    "hasura:console": "hasura console --project hasura",
+    "hasura:seed:init": "hasura seed create init_seed --from-table artists --from-table bands --from-table band_members --project hasura",
+    "hasura:seed:apply": "hasura seed apply --project hasura"
   },
   "private": true,
   "dependencies": {

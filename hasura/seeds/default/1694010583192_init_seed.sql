@@ -1,0 +1,14 @@
+SET check_function_bodies = false;
+INSERT INTO public.artists (id, name, birth_date, bio, created_at, updated_at) VALUES (1, 'Eric Clapton', '1945-03-30', '英国出身のロック・ブルースギタリスト、シンガーソングライター。', '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482');
+INSERT INTO public.artists (id, name, birth_date, bio, created_at, updated_at) VALUES (4, 'Jimmy Page', '1945-01-09', 'Led Zeppelinのギタリストとして知られるイギリスのミュージシャン。', '2023-09-06 14:21:39.615357', '2023-09-06 14:21:39.615357');
+INSERT INTO public.artists (id, name, birth_date, bio, created_at, updated_at) VALUES (5, 'Jeff Beck', '1944-06-24', 'ギタリストとして知られ、The Jeff Beck Groupのリーダーとしても活動。', '2023-09-06 14:21:39.615357', '2023-09-06 14:21:39.615357');
+INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at) VALUES (1, 'Derek and the Dominos', '1970-01-01', 'Eric Claptonをフロントマンとした短命ながらも評価の高いロックバンド。', '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482');
+INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at) VALUES (2, 'Blind Faith', '1969-01-01', 'Eric Clapton, Steve Winwood, Ginger Baker, Ric Grechによって結成された英国のスーパーグループ。', '2023-09-06 14:18:16.08347', '2023-09-06 14:18:16.08347');
+INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at) VALUES (5, 'Led Zeppelin', '1968-10-01', '1960年代後半から1970年代にかけて活動し、ロックの歴史に名を刻んだバンド。', '2023-09-06 14:21:39.615357', '2023-09-06 14:21:39.615357');
+INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at) VALUES (6, 'The Jeff Beck Group', '1967-01-01', 'ジェフ・ベックがリーダーとなり、1960年代後半に活動した英国のロックバンド。', '2023-09-06 14:21:39.615357', '2023-09-06 14:21:39.615357');
+INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at) VALUES (1, 1, '1970-01-01', NULL, 'ギター & ボーカル', '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482');
+INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at) VALUES (2, 1, '1969-01-01', NULL, 'ギター & ボーカル', '2023-09-06 14:18:16.08347', '2023-09-06 14:18:16.08347');
+INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at) VALUES (5, 4, '1968-10-01', NULL, 'ギター', '2023-09-06 14:23:05.398178', '2023-09-06 14:23:05.398178');
+INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at) VALUES (6, 5, '1967-01-01', NULL, 'ギター', '2023-09-06 14:23:05.398178', '2023-09-06 14:23:05.398178');
+SELECT pg_catalog.setval('public.artists_id_seq', 5, true);
+SELECT pg_catalog.setval('public.bands_id_seq', 6, true);

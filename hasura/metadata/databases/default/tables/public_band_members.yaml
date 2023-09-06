@@ -1,0 +1,10 @@
+table:
+  name: band_members
+  schema: public
+object_relationships:
+  - name: artist
+    using:
+      foreign_key_constraint_on: artist_id
+  - name: band
+    using:
+      foreign_key_constraint_on: band_id

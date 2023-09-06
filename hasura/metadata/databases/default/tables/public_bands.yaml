@@ -1,3 +1,11 @@
 table:
   name: bands
   schema: public
+array_relationships:
+  - name: band_members
+    using:
+      foreign_key_constraint_on:
+        column: band_id
+        table:
+          name: band_members
+          schema: public

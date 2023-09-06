@@ -1,2 +1,3 @@
 - "!include public_artists.yaml"
+- "!include public_band_members.yaml"
 - "!include public_bands.yaml"

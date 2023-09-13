@@ -1,0 +1,1712 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+"""
+columns and relationships of "artists"
+"""
+type artists {
+  """An array relationship"""
+  band_members(
+    """distinct select on columns"""
+    distinct_on: [band_members_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [band_members_order_by!]
+
+    """filter the rows returned"""
+    where: band_members_bool_exp
+  ): [band_members!]!
+
+  """An aggregate relationship"""
+  band_members_aggregate(
+    """distinct select on columns"""
+    distinct_on: [band_members_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [band_members_order_by!]
+
+    """filter the rows returned"""
+    where: band_members_bool_exp
+  ): band_members_aggregate!
+  bio: String
+  birth_date: date
+  created_at: timestamp
+  id: Int!
+  name: String!
+  updated_at: timestamp
+}
+
+"""
+aggregated selection of "artists"
+"""
+type artists_aggregate {
+  aggregate: artists_aggregate_fields
+  nodes: [artists!]!
+}
+
+"""
+aggregate fields of "artists"
+"""
+type artists_aggregate_fields {
+  avg: artists_avg_fields
+  count(columns: [artists_select_column!], distinct: Boolean): Int!
+  max: artists_max_fields
+  min: artists_min_fields
+  stddev: artists_stddev_fields
+  stddev_pop: artists_stddev_pop_fields
+  stddev_samp: artists_stddev_samp_fields
+  sum: artists_sum_fields
+  var_pop: artists_var_pop_fields
+  var_samp: artists_var_samp_fields
+  variance: artists_variance_fields
+}
+
+"""aggregate avg on columns"""
+type artists_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "artists". All fields are combined with a logical 'AND'.
+"""
+input artists_bool_exp {
+  _and: [artists_bool_exp!]
+  _not: artists_bool_exp
+  _or: [artists_bool_exp!]
+  band_members: band_members_bool_exp
+  band_members_aggregate: band_members_aggregate_bool_exp
+  bio: String_comparison_exp
+  birth_date: date_comparison_exp
+  created_at: timestamp_comparison_exp
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  updated_at: timestamp_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "artists"
+"""
+enum artists_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  artists_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "artists"
+"""
+input artists_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "artists"
+"""
+input artists_insert_input {
+  band_members: band_members_arr_rel_insert_input
+  bio: String
+  birth_date: date
+  created_at: timestamp
+  id: Int
+  name: String
+  updated_at: timestamp
+}
+
+"""aggregate max on columns"""
+type artists_max_fields {
+  bio: String
+  birth_date: date
+  created_at: timestamp
+  id: Int
+  name: String
+  updated_at: timestamp
+}
+
+"""aggregate min on columns"""
+type artists_min_fields {
+  bio: String
+  birth_date: date
+  created_at: timestamp
+  id: Int
+  name: String
+  updated_at: timestamp
+}
+
+"""
+response of any mutation on the table "artists"
+"""
+type artists_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [artists!]!
+}
+
+"""
+input type for inserting object relation for remote table "artists"
+"""
+input artists_obj_rel_insert_input {
+  data: artists_insert_input!
+
+  """upsert condition"""
+  on_conflict: artists_on_conflict
+}
+
+"""
+on_conflict condition type for table "artists"
+"""
+input artists_on_conflict {
+  constraint: artists_constraint!
+  update_columns: [artists_update_column!]! = []
+  where: artists_bool_exp
+}
+
+"""Ordering options when selecting data from "artists"."""
+input artists_order_by {
+  band_members_aggregate: band_members_aggregate_order_by
+  bio: order_by
+  birth_date: order_by
+  created_at: order_by
+  id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: artists"""
+input artists_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "artists"
+"""
+enum artists_select_column {
+  """column name"""
+  bio
+
+  """column name"""
+  birth_date
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "artists"
+"""
+input artists_set_input {
+  bio: String
+  birth_date: date
+  created_at: timestamp
+  id: Int
+  name: String
+  updated_at: timestamp
+}
+
+"""aggregate stddev on columns"""
+type artists_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type artists_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type artists_stddev_samp_fields {
+  id: Float
+}
+
+"""
+Streaming cursor of the table "artists"
+"""
+input artists_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: artists_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input artists_stream_cursor_value_input {
+  bio: String
+  birth_date: date
+  created_at: timestamp
+  id: Int
+  name: String
+  updated_at: timestamp
+}
+
+"""aggregate sum on columns"""
+type artists_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "artists"
+"""
+enum artists_update_column {
+  """column name"""
+  bio
+
+  """column name"""
+  birth_date
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+input artists_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: artists_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: artists_set_input
+
+  """filter the rows which have to be updated"""
+  where: artists_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type artists_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type artists_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type artists_variance_fields {
+  id: Float
+}
+
+"""
+columns and relationships of "band_members"
+"""
+type band_members {
+  """An object relationship"""
+  artist: artists!
+  artist_id: Int!
+
+  """An object relationship"""
+  band: bands!
+  band_id: Int!
+  created_at: timestamp
+  join_date: date
+  leave_date: date
+  role: String
+  updated_at: timestamp
+}
+
+"""
+aggregated selection of "band_members"
+"""
+type band_members_aggregate {
+  aggregate: band_members_aggregate_fields
+  nodes: [band_members!]!
+}
+
+input band_members_aggregate_bool_exp {
+  count: band_members_aggregate_bool_exp_count
+}
+
+input band_members_aggregate_bool_exp_count {
+  arguments: [band_members_select_column!]
+  distinct: Boolean
+  filter: band_members_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "band_members"
+"""
+type band_members_aggregate_fields {
+  avg: band_members_avg_fields
+  count(columns: [band_members_select_column!], distinct: Boolean): Int!
+  max: band_members_max_fields
+  min: band_members_min_fields
+  stddev: band_members_stddev_fields
+  stddev_pop: band_members_stddev_pop_fields
+  stddev_samp: band_members_stddev_samp_fields
+  sum: band_members_sum_fields
+  var_pop: band_members_var_pop_fields
+  var_samp: band_members_var_samp_fields
+  variance: band_members_variance_fields
+}
+
+"""
+order by aggregate values of table "band_members"
+"""
+input band_members_aggregate_order_by {
+  avg: band_members_avg_order_by
+  count: order_by
+  max: band_members_max_order_by
+  min: band_members_min_order_by
+  stddev: band_members_stddev_order_by
+  stddev_pop: band_members_stddev_pop_order_by
+  stddev_samp: band_members_stddev_samp_order_by
+  sum: band_members_sum_order_by
+  var_pop: band_members_var_pop_order_by
+  var_samp: band_members_var_samp_order_by
+  variance: band_members_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "band_members"
+"""
+input band_members_arr_rel_insert_input {
+  data: [band_members_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: band_members_on_conflict
+}
+
+"""aggregate avg on columns"""
+type band_members_avg_fields {
+  artist_id: Float
+  band_id: Float
+}
+
+"""
+order by avg() on columns of table "band_members"
+"""
+input band_members_avg_order_by {
+  artist_id: order_by
+  band_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "band_members". All fields are combined with a logical 'AND'.
+"""
+input band_members_bool_exp {
+  _and: [band_members_bool_exp!]
+  _not: band_members_bool_exp
+  _or: [band_members_bool_exp!]
+  artist: artists_bool_exp
+  artist_id: Int_comparison_exp
+  band: bands_bool_exp
+  band_id: Int_comparison_exp
+  created_at: timestamp_comparison_exp
+  join_date: date_comparison_exp
+  leave_date: date_comparison_exp
+  role: String_comparison_exp
+  updated_at: timestamp_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "band_members"
+"""
+enum band_members_constraint {
+  """
+  unique or primary key constraint on columns "artist_id", "band_id"
+  """
+  band_members_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "band_members"
+"""
+input band_members_inc_input {
+  artist_id: Int
+  band_id: Int
+}
+
+"""
+input type for inserting data into table "band_members"
+"""
+input band_members_insert_input {
+  artist: artists_obj_rel_insert_input
+  artist_id: Int
+  band: bands_obj_rel_insert_input
+  band_id: Int
+  created_at: timestamp
+  join_date: date
+  leave_date: date
+  role: String
+  updated_at: timestamp
+}
+
+"""aggregate max on columns"""
+type band_members_max_fields {
+  artist_id: Int
+  band_id: Int
+  created_at: timestamp
+  join_date: date
+  leave_date: date
+  role: String
+  updated_at: timestamp
+}
+
+"""
+order by max() on columns of table "band_members"
+"""
+input band_members_max_order_by {
+  artist_id: order_by
+  band_id: order_by
+  created_at: order_by
+  join_date: order_by
+  leave_date: order_by
+  role: order_by
+  updated_at: order_by
+}
+
+"""aggregate min on columns"""
+type band_members_min_fields {
+  artist_id: Int
+  band_id: Int
+  created_at: timestamp
+  join_date: date
+  leave_date: date
+  role: String
+  updated_at: timestamp
+}
+
+"""
+order by min() on columns of table "band_members"
+"""
+input band_members_min_order_by {
+  artist_id: order_by
+  band_id: order_by
+  created_at: order_by
+  join_date: order_by
+  leave_date: order_by
+  role: order_by
+  updated_at: order_by
+}
+
+"""
+response of any mutation on the table "band_members"
+"""
+type band_members_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [band_members!]!
+}
+
+"""
+on_conflict condition type for table "band_members"
+"""
+input band_members_on_conflict {
+  constraint: band_members_constraint!
+  update_columns: [band_members_update_column!]! = []
+  where: band_members_bool_exp
+}
+
+"""Ordering options when selecting data from "band_members"."""
+input band_members_order_by {
+  artist: artists_order_by
+  artist_id: order_by
+  band: bands_order_by
+  band_id: order_by
+  created_at: order_by
+  join_date: order_by
+  leave_date: order_by
+  role: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: band_members"""
+input band_members_pk_columns_input {
+  artist_id: Int!
+  band_id: Int!
+}
+
+"""
+select columns of table "band_members"
+"""
+enum band_members_select_column {
+  """column name"""
+  artist_id
+
+  """column name"""
+  band_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  join_date
+
+  """column name"""
+  leave_date
+
+  """column name"""
+  role
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "band_members"
+"""
+input band_members_set_input {
+  artist_id: Int
+  band_id: Int
+  created_at: timestamp
+  join_date: date
+  leave_date: date
+  role: String
+  updated_at: timestamp
+}
+
+"""aggregate stddev on columns"""
+type band_members_stddev_fields {
+  artist_id: Float
+  band_id: Float
+}
+
+"""
+order by stddev() on columns of table "band_members"
+"""
+input band_members_stddev_order_by {
+  artist_id: order_by
+  band_id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type band_members_stddev_pop_fields {
+  artist_id: Float
+  band_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "band_members"
+"""
+input band_members_stddev_pop_order_by {
+  artist_id: order_by
+  band_id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type band_members_stddev_samp_fields {
+  artist_id: Float
+  band_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "band_members"
+"""
+input band_members_stddev_samp_order_by {
+  artist_id: order_by
+  band_id: order_by
+}
+
+"""
+Streaming cursor of the table "band_members"
+"""
+input band_members_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: band_members_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input band_members_stream_cursor_value_input {
+  artist_id: Int
+  band_id: Int
+  created_at: timestamp
+  join_date: date
+  leave_date: date
+  role: String
+  updated_at: timestamp
+}
+
+"""aggregate sum on columns"""
+type band_members_sum_fields {
+  artist_id: Int
+  band_id: Int
+}
+
+"""
+order by sum() on columns of table "band_members"
+"""
+input band_members_sum_order_by {
+  artist_id: order_by
+  band_id: order_by
+}
+
+"""
+update columns of table "band_members"
+"""
+enum band_members_update_column {
+  """column name"""
+  artist_id
+
+  """column name"""
+  band_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  join_date
+
+  """column name"""
+  leave_date
+
+  """column name"""
+  role
+
+  """column name"""
+  updated_at
+}
+
+input band_members_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: band_members_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: band_members_set_input
+
+  """filter the rows which have to be updated"""
+  where: band_members_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type band_members_var_pop_fields {
+  artist_id: Float
+  band_id: Float
+}
+
+"""
+order by var_pop() on columns of table "band_members"
+"""
+input band_members_var_pop_order_by {
+  artist_id: order_by
+  band_id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type band_members_var_samp_fields {
+  artist_id: Float
+  band_id: Float
+}
+
+"""
+order by var_samp() on columns of table "band_members"
+"""
+input band_members_var_samp_order_by {
+  artist_id: order_by
+  band_id: order_by
+}
+
+"""aggregate variance on columns"""
+type band_members_variance_fields {
+  artist_id: Float
+  band_id: Float
+}
+
+"""
+order by variance() on columns of table "band_members"
+"""
+input band_members_variance_order_by {
+  artist_id: order_by
+  band_id: order_by
+}
+
+"""
+columns and relationships of "bands"
+"""
+type bands {
+  """An array relationship"""
+  band_members(
+    """distinct select on columns"""
+    distinct_on: [band_members_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [band_members_order_by!]
+
+    """filter the rows returned"""
+    where: band_members_bool_exp
+  ): [band_members!]!
+
+  """An aggregate relationship"""
+  band_members_aggregate(
+    """distinct select on columns"""
+    distinct_on: [band_members_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [band_members_order_by!]
+
+    """filter the rows returned"""
+    where: band_members_bool_exp
+  ): band_members_aggregate!
+  bio: String
+  created_at: timestamp
+  formation_date: date
+  id: Int!
+  name: String!
+  updated_at: timestamp
+}
+
+"""
+aggregated selection of "bands"
+"""
+type bands_aggregate {
+  aggregate: bands_aggregate_fields
+  nodes: [bands!]!
+}
+
+"""
+aggregate fields of "bands"
+"""
+type bands_aggregate_fields {
+  avg: bands_avg_fields
+  count(columns: [bands_select_column!], distinct: Boolean): Int!
+  max: bands_max_fields
+  min: bands_min_fields
+  stddev: bands_stddev_fields
+  stddev_pop: bands_stddev_pop_fields
+  stddev_samp: bands_stddev_samp_fields
+  sum: bands_sum_fields
+  var_pop: bands_var_pop_fields
+  var_samp: bands_var_samp_fields
+  variance: bands_variance_fields
+}
+
+"""aggregate avg on columns"""
+type bands_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "bands". All fields are combined with a logical 'AND'.
+"""
+input bands_bool_exp {
+  _and: [bands_bool_exp!]
+  _not: bands_bool_exp
+  _or: [bands_bool_exp!]
+  band_members: band_members_bool_exp
+  band_members_aggregate: band_members_aggregate_bool_exp
+  bio: String_comparison_exp
+  created_at: timestamp_comparison_exp
+  formation_date: date_comparison_exp
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  updated_at: timestamp_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "bands"
+"""
+enum bands_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  bands_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "bands"
+"""
+input bands_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "bands"
+"""
+input bands_insert_input {
+  band_members: band_members_arr_rel_insert_input
+  bio: String
+  created_at: timestamp
+  formation_date: date
+  id: Int
+  name: String
+  updated_at: timestamp
+}
+
+"""aggregate max on columns"""
+type bands_max_fields {
+  bio: String
+  created_at: timestamp
+  formation_date: date
+  id: Int
+  name: String
+  updated_at: timestamp
+}
+
+"""aggregate min on columns"""
+type bands_min_fields {
+  bio: String
+  created_at: timestamp
+  formation_date: date
+  id: Int
+  name: String
+  updated_at: timestamp
+}
+
+"""
+response of any mutation on the table "bands"
+"""
+type bands_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [bands!]!
+}
+
+"""
+input type for inserting object relation for remote table "bands"
+"""
+input bands_obj_rel_insert_input {
+  data: bands_insert_input!
+
+  """upsert condition"""
+  on_conflict: bands_on_conflict
+}
+
+"""
+on_conflict condition type for table "bands"
+"""
+input bands_on_conflict {
+  constraint: bands_constraint!
+  update_columns: [bands_update_column!]! = []
+  where: bands_bool_exp
+}
+
+"""Ordering options when selecting data from "bands"."""
+input bands_order_by {
+  band_members_aggregate: band_members_aggregate_order_by
+  bio: order_by
+  created_at: order_by
+  formation_date: order_by
+  id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: bands"""
+input bands_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "bands"
+"""
+enum bands_select_column {
+  """column name"""
+  bio
+
+  """column name"""
+  created_at
+
+  """column name"""
+  formation_date
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "bands"
+"""
+input bands_set_input {
+  bio: String
+  created_at: timestamp
+  formation_date: date
+  id: Int
+  name: String
+  updated_at: timestamp
+}
+
+"""aggregate stddev on columns"""
+type bands_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type bands_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type bands_stddev_samp_fields {
+  id: Float
+}
+
+"""
+Streaming cursor of the table "bands"
+"""
+input bands_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: bands_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input bands_stream_cursor_value_input {
+  bio: String
+  created_at: timestamp
+  formation_date: date
+  id: Int
+  name: String
+  updated_at: timestamp
+}
+
+"""aggregate sum on columns"""
+type bands_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "bands"
+"""
+enum bands_update_column {
+  """column name"""
+  bio
+
+  """column name"""
+  created_at
+
+  """column name"""
+  formation_date
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+input bands_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: bands_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: bands_set_input
+
+  """filter the rows which have to be updated"""
+  where: bands_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type bands_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type bands_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type bands_variance_fields {
+  id: Float
+}
+
+"""ordering argument of a cursor"""
+enum cursor_ordering {
+  """ascending ordering of the cursor"""
+  ASC
+
+  """descending ordering of the cursor"""
+  DESC
+}
+
+scalar date
+
+"""
+Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'.
+"""
+input date_comparison_exp {
+  _eq: date
+  _gt: date
+  _gte: date
+  _in: [date!]
+  _is_null: Boolean
+  _lt: date
+  _lte: date
+  _neq: date
+  _nin: [date!]
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "artists"
+  """
+  delete_artists(
+    """filter the rows which have to be deleted"""
+    where: artists_bool_exp!
+  ): artists_mutation_response
+
+  """
+  delete single row from the table: "artists"
+  """
+  delete_artists_by_pk(id: Int!): artists
+
+  """
+  delete data from the table: "band_members"
+  """
+  delete_band_members(
+    """filter the rows which have to be deleted"""
+    where: band_members_bool_exp!
+  ): band_members_mutation_response
+
+  """
+  delete single row from the table: "band_members"
+  """
+  delete_band_members_by_pk(artist_id: Int!, band_id: Int!): band_members
+
+  """
+  delete data from the table: "bands"
+  """
+  delete_bands(
+    """filter the rows which have to be deleted"""
+    where: bands_bool_exp!
+  ): bands_mutation_response
+
+  """
+  delete single row from the table: "bands"
+  """
+  delete_bands_by_pk(id: Int!): bands
+
+  """
+  insert data into the table: "artists"
+  """
+  insert_artists(
+    """the rows to be inserted"""
+    objects: [artists_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: artists_on_conflict
+  ): artists_mutation_response
+
+  """
+  insert a single row into the table: "artists"
+  """
+  insert_artists_one(
+    """the row to be inserted"""
+    object: artists_insert_input!
+
+    """upsert condition"""
+    on_conflict: artists_on_conflict
+  ): artists
+
+  """
+  insert data into the table: "band_members"
+  """
+  insert_band_members(
+    """the rows to be inserted"""
+    objects: [band_members_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: band_members_on_conflict
+  ): band_members_mutation_response
+
+  """
+  insert a single row into the table: "band_members"
+  """
+  insert_band_members_one(
+    """the row to be inserted"""
+    object: band_members_insert_input!
+
+    """upsert condition"""
+    on_conflict: band_members_on_conflict
+  ): band_members
+
+  """
+  insert data into the table: "bands"
+  """
+  insert_bands(
+    """the rows to be inserted"""
+    objects: [bands_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: bands_on_conflict
+  ): bands_mutation_response
+
+  """
+  insert a single row into the table: "bands"
+  """
+  insert_bands_one(
+    """the row to be inserted"""
+    object: bands_insert_input!
+
+    """upsert condition"""
+    on_conflict: bands_on_conflict
+  ): bands
+
+  """
+  update data of the table: "artists"
+  """
+  update_artists(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: artists_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: artists_set_input
+
+    """filter the rows which have to be updated"""
+    where: artists_bool_exp!
+  ): artists_mutation_response
+
+  """
+  update single row of the table: "artists"
+  """
+  update_artists_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: artists_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: artists_set_input
+    pk_columns: artists_pk_columns_input!
+  ): artists
+
+  """
+  update multiples rows of table: "artists"
+  """
+  update_artists_many(
+    """updates to execute, in order"""
+    updates: [artists_updates!]!
+  ): [artists_mutation_response]
+
+  """
+  update data of the table: "band_members"
+  """
+  update_band_members(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: band_members_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: band_members_set_input
+
+    """filter the rows which have to be updated"""
+    where: band_members_bool_exp!
+  ): band_members_mutation_response
+
+  """
+  update single row of the table: "band_members"
+  """
+  update_band_members_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: band_members_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: band_members_set_input
+    pk_columns: band_members_pk_columns_input!
+  ): band_members
+
+  """
+  update multiples rows of table: "band_members"
+  """
+  update_band_members_many(
+    """updates to execute, in order"""
+    updates: [band_members_updates!]!
+  ): [band_members_mutation_response]
+
+  """
+  update data of the table: "bands"
+  """
+  update_bands(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: bands_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: bands_set_input
+
+    """filter the rows which have to be updated"""
+    where: bands_bool_exp!
+  ): bands_mutation_response
+
+  """
+  update single row of the table: "bands"
+  """
+  update_bands_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: bands_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: bands_set_input
+    pk_columns: bands_pk_columns_input!
+  ): bands
+
+  """
+  update multiples rows of table: "bands"
+  """
+  update_bands_many(
+    """updates to execute, in order"""
+    updates: [bands_updates!]!
+  ): [bands_mutation_response]
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+type query_root {
+  """
+  fetch data from the table: "artists"
+  """
+  artists(
+    """distinct select on columns"""
+    distinct_on: [artists_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [artists_order_by!]
+
+    """filter the rows returned"""
+    where: artists_bool_exp
+  ): [artists!]!
+
+  """
+  fetch aggregated fields from the table: "artists"
+  """
+  artists_aggregate(
+    """distinct select on columns"""
+    distinct_on: [artists_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [artists_order_by!]
+
+    """filter the rows returned"""
+    where: artists_bool_exp
+  ): artists_aggregate!
+
+  """fetch data from the table: "artists" using primary key columns"""
+  artists_by_pk(id: Int!): artists
+
+  """An array relationship"""
+  band_members(
+    """distinct select on columns"""
+    distinct_on: [band_members_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [band_members_order_by!]
+
+    """filter the rows returned"""
+    where: band_members_bool_exp
+  ): [band_members!]!
+
+  """An aggregate relationship"""
+  band_members_aggregate(
+    """distinct select on columns"""
+    distinct_on: [band_members_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [band_members_order_by!]
+
+    """filter the rows returned"""
+    where: band_members_bool_exp
+  ): band_members_aggregate!
+
+  """fetch data from the table: "band_members" using primary key columns"""
+  band_members_by_pk(artist_id: Int!, band_id: Int!): band_members
+
+  """
+  fetch data from the table: "bands"
+  """
+  bands(
+    """distinct select on columns"""
+    distinct_on: [bands_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [bands_order_by!]
+
+    """filter the rows returned"""
+    where: bands_bool_exp
+  ): [bands!]!
+
+  """
+  fetch aggregated fields from the table: "bands"
+  """
+  bands_aggregate(
+    """distinct select on columns"""
+    distinct_on: [bands_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [bands_order_by!]
+
+    """filter the rows returned"""
+    where: bands_bool_exp
+  ): bands_aggregate!
+
+  """fetch data from the table: "bands" using primary key columns"""
+  bands_by_pk(id: Int!): bands
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "artists"
+  """
+  artists(
+    """distinct select on columns"""
+    distinct_on: [artists_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [artists_order_by!]
+
+    """filter the rows returned"""
+    where: artists_bool_exp
+  ): [artists!]!
+
+  """
+  fetch aggregated fields from the table: "artists"
+  """
+  artists_aggregate(
+    """distinct select on columns"""
+    distinct_on: [artists_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [artists_order_by!]
+
+    """filter the rows returned"""
+    where: artists_bool_exp
+  ): artists_aggregate!
+
+  """fetch data from the table: "artists" using primary key columns"""
+  artists_by_pk(id: Int!): artists
+
+  """
+  fetch data from the table in a streaming manner: "artists"
+  """
+  artists_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [artists_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: artists_bool_exp
+  ): [artists!]!
+
+  """An array relationship"""
+  band_members(
+    """distinct select on columns"""
+    distinct_on: [band_members_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [band_members_order_by!]
+
+    """filter the rows returned"""
+    where: band_members_bool_exp
+  ): [band_members!]!
+
+  """An aggregate relationship"""
+  band_members_aggregate(
+    """distinct select on columns"""
+    distinct_on: [band_members_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [band_members_order_by!]
+
+    """filter the rows returned"""
+    where: band_members_bool_exp
+  ): band_members_aggregate!
+
+  """fetch data from the table: "band_members" using primary key columns"""
+  band_members_by_pk(artist_id: Int!, band_id: Int!): band_members
+
+  """
+  fetch data from the table in a streaming manner: "band_members"
+  """
+  band_members_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [band_members_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: band_members_bool_exp
+  ): [band_members!]!
+
+  """
+  fetch data from the table: "bands"
+  """
+  bands(
+    """distinct select on columns"""
+    distinct_on: [bands_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [bands_order_by!]
+
+    """filter the rows returned"""
+    where: bands_bool_exp
+  ): [bands!]!
+
+  """
+  fetch aggregated fields from the table: "bands"
+  """
+  bands_aggregate(
+    """distinct select on columns"""
+    distinct_on: [bands_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [bands_order_by!]
+
+    """filter the rows returned"""
+    where: bands_bool_exp
+  ): bands_aggregate!
+
+  """fetch data from the table: "bands" using primary key columns"""
+  bands_by_pk(id: Int!): bands
+
+  """
+  fetch data from the table in a streaming manner: "bands"
+  """
+  bands_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [bands_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: bands_bool_exp
+  ): [bands!]!
+}
+
+scalar timestamp
+
+"""
+Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'.
+"""
+input timestamp_comparison_exp {
+  _eq: timestamp
+  _gt: timestamp
+  _gte: timestamp
+  _in: [timestamp!]
+  _is_null: Boolean
+  _lt: timestamp
+  _lte: timestamp
+  _neq: timestamp
+  _nin: [timestamp!]
+}
+

@@ -28,6 +28,19 @@ input Int_comparison_exp {
   _nin: [Int!]
 }
 
+"""An object with globally unique ID"""
+interface Node {
+  """A globally unique identifier"""
+  id: ID!
+}
+
+type PageInfo {
+  endCursor: String!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String!
+}
+
 """
 Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 """
@@ -84,7 +97,7 @@ input String_comparison_exp {
 """
 columns and relationships of "artists"
 """
-type artists {
+type artists implements Node {
   """An array relationship"""
   band_members(
     """distinct select on columns"""
@@ -120,42 +133,42 @@ type artists {
     """filter the rows returned"""
     where: band_members_bool_exp
   ): band_members_aggregate!
+
+  """An array relationship connection"""
+  band_members_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [band_members_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [band_members_order_by!]
+
+    """filter the rows returned"""
+    where: band_members_bool_exp
+  ): band_membersConnection!
   bio: String
   birth_date: date
   created_at: timestamp
-  id: Int!
+  id: ID!
   name: String!
   updated_at: timestamp
 }
 
 """
-aggregated selection of "artists"
+A Relay connection object on "artists"
 """
-type artists_aggregate {
-  aggregate: artists_aggregate_fields
-  nodes: [artists!]!
+type artistsConnection {
+  edges: [artistsEdge!]!
+  pageInfo: PageInfo!
 }
 
-"""
-aggregate fields of "artists"
-"""
-type artists_aggregate_fields {
-  avg: artists_avg_fields
-  count(columns: [artists_select_column!], distinct: Boolean): Int!
-  max: artists_max_fields
-  min: artists_min_fields
-  stddev: artists_stddev_fields
-  stddev_pop: artists_stddev_pop_fields
-  stddev_samp: artists_stddev_samp_fields
-  sum: artists_sum_fields
-  var_pop: artists_var_pop_fields
-  var_samp: artists_var_samp_fields
-  variance: artists_variance_fields
-}
-
-"""aggregate avg on columns"""
-type artists_avg_fields {
-  id: Float
+type artistsEdge {
+  cursor: String!
+  node: artists!
 }
 
 """
@@ -197,26 +210,6 @@ input type for inserting data into table "artists"
 """
 input artists_insert_input {
   band_members: band_members_arr_rel_insert_input
-  bio: String
-  birth_date: date
-  created_at: timestamp
-  id: Int
-  name: String
-  updated_at: timestamp
-}
-
-"""aggregate max on columns"""
-type artists_max_fields {
-  bio: String
-  birth_date: date
-  created_at: timestamp
-  id: Int
-  name: String
-  updated_at: timestamp
-}
-
-"""aggregate min on columns"""
-type artists_min_fields {
   bio: String
   birth_date: date
   created_at: timestamp
@@ -306,47 +299,6 @@ input artists_set_input {
   updated_at: timestamp
 }
 
-"""aggregate stddev on columns"""
-type artists_stddev_fields {
-  id: Float
-}
-
-"""aggregate stddev_pop on columns"""
-type artists_stddev_pop_fields {
-  id: Float
-}
-
-"""aggregate stddev_samp on columns"""
-type artists_stddev_samp_fields {
-  id: Float
-}
-
-"""
-Streaming cursor of the table "artists"
-"""
-input artists_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: artists_stream_cursor_value_input!
-
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input artists_stream_cursor_value_input {
-  bio: String
-  birth_date: date
-  created_at: timestamp
-  id: Int
-  name: String
-  updated_at: timestamp
-}
-
-"""aggregate sum on columns"""
-type artists_sum_fields {
-  id: Int
-}
-
 """
 update columns of table "artists"
 """
@@ -381,25 +333,10 @@ input artists_updates {
   where: artists_bool_exp!
 }
 
-"""aggregate var_pop on columns"""
-type artists_var_pop_fields {
-  id: Float
-}
-
-"""aggregate var_samp on columns"""
-type artists_var_samp_fields {
-  id: Float
-}
-
-"""aggregate variance on columns"""
-type artists_variance_fields {
-  id: Float
-}
-
 """
 columns and relationships of "band_members"
 """
-type band_members {
+type band_members implements Node {
   """An object relationship"""
   artist: artists!
   artist_id: Int!
@@ -408,10 +345,24 @@ type band_members {
   band: bands!
   band_id: Int!
   created_at: timestamp
+  id: ID!
   join_date: date
   leave_date: date
   role: String
   updated_at: timestamp
+}
+
+"""
+A Relay connection object on "band_members"
+"""
+type band_membersConnection {
+  edges: [band_membersEdge!]!
+  pageInfo: PageInfo!
+}
+
+type band_membersEdge {
+  cursor: String!
+  node: band_members!
 }
 
 """
@@ -710,28 +661,6 @@ input band_members_stddev_samp_order_by {
   band_id: order_by
 }
 
-"""
-Streaming cursor of the table "band_members"
-"""
-input band_members_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: band_members_stream_cursor_value_input!
-
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input band_members_stream_cursor_value_input {
-  artist_id: Int
-  band_id: Int
-  created_at: timestamp
-  join_date: date
-  leave_date: date
-  role: String
-  updated_at: timestamp
-}
-
 """aggregate sum on columns"""
 type band_members_sum_fields {
   artist_id: Int
@@ -828,7 +757,7 @@ input band_members_variance_order_by {
 """
 columns and relationships of "bands"
 """
-type bands {
+type bands implements Node {
   """An array relationship"""
   band_members(
     """distinct select on columns"""
@@ -864,42 +793,42 @@ type bands {
     """filter the rows returned"""
     where: band_members_bool_exp
   ): band_members_aggregate!
+
+  """An array relationship connection"""
+  band_members_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [band_members_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [band_members_order_by!]
+
+    """filter the rows returned"""
+    where: band_members_bool_exp
+  ): band_membersConnection!
   bio: String
   created_at: timestamp
   formation_date: date
-  id: Int!
+  id: ID!
   name: String!
   updated_at: timestamp
 }
 
 """
-aggregated selection of "bands"
+A Relay connection object on "bands"
 """
-type bands_aggregate {
-  aggregate: bands_aggregate_fields
-  nodes: [bands!]!
+type bandsConnection {
+  edges: [bandsEdge!]!
+  pageInfo: PageInfo!
 }
 
-"""
-aggregate fields of "bands"
-"""
-type bands_aggregate_fields {
-  avg: bands_avg_fields
-  count(columns: [bands_select_column!], distinct: Boolean): Int!
-  max: bands_max_fields
-  min: bands_min_fields
-  stddev: bands_stddev_fields
-  stddev_pop: bands_stddev_pop_fields
-  stddev_samp: bands_stddev_samp_fields
-  sum: bands_sum_fields
-  var_pop: bands_var_pop_fields
-  var_samp: bands_var_samp_fields
-  variance: bands_variance_fields
-}
-
-"""aggregate avg on columns"""
-type bands_avg_fields {
-  id: Float
+type bandsEdge {
+  cursor: String!
+  node: bands!
 }
 
 """
@@ -941,26 +870,6 @@ input type for inserting data into table "bands"
 """
 input bands_insert_input {
   band_members: band_members_arr_rel_insert_input
-  bio: String
-  created_at: timestamp
-  formation_date: date
-  id: Int
-  name: String
-  updated_at: timestamp
-}
-
-"""aggregate max on columns"""
-type bands_max_fields {
-  bio: String
-  created_at: timestamp
-  formation_date: date
-  id: Int
-  name: String
-  updated_at: timestamp
-}
-
-"""aggregate min on columns"""
-type bands_min_fields {
   bio: String
   created_at: timestamp
   formation_date: date
@@ -1050,47 +959,6 @@ input bands_set_input {
   updated_at: timestamp
 }
 
-"""aggregate stddev on columns"""
-type bands_stddev_fields {
-  id: Float
-}
-
-"""aggregate stddev_pop on columns"""
-type bands_stddev_pop_fields {
-  id: Float
-}
-
-"""aggregate stddev_samp on columns"""
-type bands_stddev_samp_fields {
-  id: Float
-}
-
-"""
-Streaming cursor of the table "bands"
-"""
-input bands_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: bands_stream_cursor_value_input!
-
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input bands_stream_cursor_value_input {
-  bio: String
-  created_at: timestamp
-  formation_date: date
-  id: Int
-  name: String
-  updated_at: timestamp
-}
-
-"""aggregate sum on columns"""
-type bands_sum_fields {
-  id: Int
-}
-
 """
 update columns of table "bands"
 """
@@ -1123,30 +991,6 @@ input bands_updates {
 
   """filter the rows which have to be updated"""
   where: bands_bool_exp!
-}
-
-"""aggregate var_pop on columns"""
-type bands_var_pop_fields {
-  id: Float
-}
-
-"""aggregate var_samp on columns"""
-type bands_var_samp_fields {
-  id: Float
-}
-
-"""aggregate variance on columns"""
-type bands_variance_fields {
-  id: Float
-}
-
-"""ordering argument of a cursor"""
-enum cursor_ordering {
-  """ascending ordering of the cursor"""
-  ASC
-
-  """descending ordering of the cursor"""
-  DESC
 }
 
 scalar date
@@ -1401,296 +1245,122 @@ type query_root {
   """
   fetch data from the table: "artists"
   """
-  artists(
+  artists_connection(
+    after: String
+    before: String
+
     """distinct select on columns"""
     distinct_on: [artists_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
+    first: Int
+    last: Int
 
     """sort the rows by one or more columns"""
     order_by: [artists_order_by!]
 
     """filter the rows returned"""
     where: artists_bool_exp
-  ): [artists!]!
+  ): artistsConnection!
 
-  """
-  fetch aggregated fields from the table: "artists"
-  """
-  artists_aggregate(
-    """distinct select on columns"""
-    distinct_on: [artists_select_column!]
+  """An array relationship connection"""
+  band_members_connection(
+    after: String
+    before: String
 
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [artists_order_by!]
-
-    """filter the rows returned"""
-    where: artists_bool_exp
-  ): artists_aggregate!
-
-  """fetch data from the table: "artists" using primary key columns"""
-  artists_by_pk(id: Int!): artists
-
-  """An array relationship"""
-  band_members(
     """distinct select on columns"""
     distinct_on: [band_members_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
+    first: Int
+    last: Int
 
     """sort the rows by one or more columns"""
     order_by: [band_members_order_by!]
 
     """filter the rows returned"""
     where: band_members_bool_exp
-  ): [band_members!]!
-
-  """An aggregate relationship"""
-  band_members_aggregate(
-    """distinct select on columns"""
-    distinct_on: [band_members_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [band_members_order_by!]
-
-    """filter the rows returned"""
-    where: band_members_bool_exp
-  ): band_members_aggregate!
-
-  """fetch data from the table: "band_members" using primary key columns"""
-  band_members_by_pk(artist_id: Int!, band_id: Int!): band_members
+  ): band_membersConnection!
 
   """
   fetch data from the table: "bands"
   """
-  bands(
+  bands_connection(
+    after: String
+    before: String
+
     """distinct select on columns"""
     distinct_on: [bands_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
+    first: Int
+    last: Int
 
     """sort the rows by one or more columns"""
     order_by: [bands_order_by!]
 
     """filter the rows returned"""
     where: bands_bool_exp
-  ): [bands!]!
-
-  """
-  fetch aggregated fields from the table: "bands"
-  """
-  bands_aggregate(
-    """distinct select on columns"""
-    distinct_on: [bands_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [bands_order_by!]
-
-    """filter the rows returned"""
-    where: bands_bool_exp
-  ): bands_aggregate!
-
-  """fetch data from the table: "bands" using primary key columns"""
-  bands_by_pk(id: Int!): bands
+  ): bandsConnection!
+  node(
+    """A globally unique id"""
+    id: ID!
+  ): Node
 }
 
 type subscription_root {
   """
   fetch data from the table: "artists"
   """
-  artists(
+  artists_connection(
+    after: String
+    before: String
+
     """distinct select on columns"""
     distinct_on: [artists_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
+    first: Int
+    last: Int
 
     """sort the rows by one or more columns"""
     order_by: [artists_order_by!]
 
     """filter the rows returned"""
     where: artists_bool_exp
-  ): [artists!]!
+  ): artistsConnection!
 
-  """
-  fetch aggregated fields from the table: "artists"
-  """
-  artists_aggregate(
-    """distinct select on columns"""
-    distinct_on: [artists_select_column!]
+  """An array relationship connection"""
+  band_members_connection(
+    after: String
+    before: String
 
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [artists_order_by!]
-
-    """filter the rows returned"""
-    where: artists_bool_exp
-  ): artists_aggregate!
-
-  """fetch data from the table: "artists" using primary key columns"""
-  artists_by_pk(id: Int!): artists
-
-  """
-  fetch data from the table in a streaming manner: "artists"
-  """
-  artists_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [artists_stream_cursor_input]!
-
-    """filter the rows returned"""
-    where: artists_bool_exp
-  ): [artists!]!
-
-  """An array relationship"""
-  band_members(
     """distinct select on columns"""
     distinct_on: [band_members_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
+    first: Int
+    last: Int
 
     """sort the rows by one or more columns"""
     order_by: [band_members_order_by!]
 
     """filter the rows returned"""
     where: band_members_bool_exp
-  ): [band_members!]!
-
-  """An aggregate relationship"""
-  band_members_aggregate(
-    """distinct select on columns"""
-    distinct_on: [band_members_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [band_members_order_by!]
-
-    """filter the rows returned"""
-    where: band_members_bool_exp
-  ): band_members_aggregate!
-
-  """fetch data from the table: "band_members" using primary key columns"""
-  band_members_by_pk(artist_id: Int!, band_id: Int!): band_members
-
-  """
-  fetch data from the table in a streaming manner: "band_members"
-  """
-  band_members_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [band_members_stream_cursor_input]!
-
-    """filter the rows returned"""
-    where: band_members_bool_exp
-  ): [band_members!]!
+  ): band_membersConnection!
 
   """
   fetch data from the table: "bands"
   """
-  bands(
+  bands_connection(
+    after: String
+    before: String
+
     """distinct select on columns"""
     distinct_on: [bands_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
+    first: Int
+    last: Int
 
     """sort the rows by one or more columns"""
     order_by: [bands_order_by!]
 
     """filter the rows returned"""
     where: bands_bool_exp
-  ): [bands!]!
-
-  """
-  fetch aggregated fields from the table: "bands"
-  """
-  bands_aggregate(
-    """distinct select on columns"""
-    distinct_on: [bands_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [bands_order_by!]
-
-    """filter the rows returned"""
-    where: bands_bool_exp
-  ): bands_aggregate!
-
-  """fetch data from the table: "bands" using primary key columns"""
-  bands_by_pk(id: Int!): bands
-
-  """
-  fetch data from the table in a streaming manner: "bands"
-  """
-  bands_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [bands_stream_cursor_input]!
-
-    """filter the rows returned"""
-    where: bands_bool_exp
-  ): [bands!]!
+  ): bandsConnection!
+  node(
+    """A globally unique id"""
+    id: ID!
+  ): Node
 }
 
 scalar timestamp

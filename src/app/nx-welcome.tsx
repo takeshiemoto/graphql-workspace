@@ -2,10 +2,15 @@ import { graphql } from 'relay-runtime';
 import { useLazyLoadQuery } from 'react-relay';
 
 const InitQuery = graphql`
-  query InitQuery {
-    artists {
-      id
-      name
+  query Artists {
+    artists_connection {
+      edges {
+        node {
+          id
+          name
+          bio
+        }
+      }
     }
   }
 `;

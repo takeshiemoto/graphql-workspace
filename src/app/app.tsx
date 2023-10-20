@@ -1,16 +1,18 @@
-import styled from 'styled-components';
-
-import NxWelcome from './nx-welcome';
-
-const StyledApp = styled.div`
-  // Your style here
-`;
+import Main from './Main';
+import { RelayEnvironmentProvider } from 'react-relay';
+import { environment } from '../environment';
+import { Suspense } from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
 
 export function App() {
   return (
-    <StyledApp>
-      <NxWelcome title="graphql-workspace" />
-    </StyledApp>
+    <Suspense>
+      <RelayEnvironmentProvider environment={environment}>
+        <ChakraProvider>
+          <Main />
+        </ChakraProvider>
+      </RelayEnvironmentProvider>
+    </Suspense>
   );
 }
 

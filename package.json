@@ -7,7 +7,7 @@
     "build": "nx build",
     "test": "nx test",
     "gq:export": "gq http://localhost:8080/v1beta1/relay --introspect > schema.graphql",
-    "hasura:deploy": "hasura deploy --project hasura",
+    "hasura:deploy": "hasura deploy --with-seeds --project hasura",
     "relay": "relay-compiler",
     "relay:watch": "relay-compiler --watch"
   },

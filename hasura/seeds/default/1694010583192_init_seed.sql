@@ -1,14 +1,67 @@
-SET check_function_bodies = false;
-INSERT INTO public.artists (id, name, birth_date, bio, created_at, updated_at) VALUES (1, 'Eric Clapton', '1945-03-30', '英国出身のロック・ブルースギタリスト、シンガーソングライター。', '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482');
-INSERT INTO public.artists (id, name, birth_date, bio, created_at, updated_at) VALUES (4, 'Jimmy Page', '1945-01-09', 'Led Zeppelinのギタリストとして知られるイギリスのミュージシャン。', '2023-09-06 14:21:39.615357', '2023-09-06 14:21:39.615357');
-INSERT INTO public.artists (id, name, birth_date, bio, created_at, updated_at) VALUES (5, 'Jeff Beck', '1944-06-24', 'ギタリストとして知られ、The Jeff Beck Groupのリーダーとしても活動。', '2023-09-06 14:21:39.615357', '2023-09-06 14:21:39.615357');
-INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at) VALUES (1, 'Derek and the Dominos', '1970-01-01', 'Eric Claptonをフロントマンとした短命ながらも評価の高いロックバンド。', '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482');
-INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at) VALUES (2, 'Blind Faith', '1969-01-01', 'Eric Clapton, Steve Winwood, Ginger Baker, Ric Grechによって結成された英国のスーパーグループ。', '2023-09-06 14:18:16.08347', '2023-09-06 14:18:16.08347');
-INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at) VALUES (5, 'Led Zeppelin', '1968-10-01', '1960年代後半から1970年代にかけて活動し、ロックの歴史に名を刻んだバンド。', '2023-09-06 14:21:39.615357', '2023-09-06 14:21:39.615357');
-INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at) VALUES (6, 'The Jeff Beck Group', '1967-01-01', 'ジェフ・ベックがリーダーとなり、1960年代後半に活動した英国のロックバンド。', '2023-09-06 14:21:39.615357', '2023-09-06 14:21:39.615357');
-INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at) VALUES (1, 1, '1970-01-01', NULL, 'ギター & ボーカル', '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482');
-INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at) VALUES (2, 1, '1969-01-01', NULL, 'ギター & ボーカル', '2023-09-06 14:18:16.08347', '2023-09-06 14:18:16.08347');
-INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at) VALUES (5, 4, '1968-10-01', NULL, 'ギター', '2023-09-06 14:23:05.398178', '2023-09-06 14:23:05.398178');
-INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at) VALUES (6, 5, '1967-01-01', NULL, 'ギター', '2023-09-06 14:23:05.398178', '2023-09-06 14:23:05.398178');
+SET
+check_function_bodies = false;
+
+INSERT INTO public.artists (id, name, birth_date, bio, created_at, updated_at)
+VALUES (1, 'Eric Clapton', '1945-03-30', '英国出身のロック・ブルースギタリスト、シンガーソングライター。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (2, 'Sophie Ray', '1987-03-15', 'カナダ出身のポップシンガー。デビューアルバムで大ブレイク。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (3, 'Leon Bridges', '1990-07-13', 'アメリカのソウルミュージシャン。レトロなサウンドが特徴。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (4, 'Nina Turner', '1992-12-10', 'オーストラリア出身のR&Bアーティスト。グラミー賞受賞経験あり。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (5, 'David Russo', '1975-05-17', 'イタリア出身のジャズピアニスト。国際的に数々の賞を受賞。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (6, 'Aisha Collins', '1984-09-04', '英国のソングライター兼シンガー。インディーシーンで人気。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (7, 'Francisco Mora', '1991-11-02', 'メキシコ出身のギタリスト。ラテン音楽とロックの融合が特徴。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (8, 'Lila Watkins', '1994-02-28', 'ニュージーランドの新進気鋭のポップスター。', '2023-09-06 14:16:47.175482',
+        '2023-09-06 14:16:47.175482'),
+       (9, 'Haruto Tanaka', '1988-08-15', '日本のロックミュージシャン。ソロアーティストとしてアジアで大ヒット。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (10, 'Kamala Nair', '1980-04-20', 'インド出身の伝統的なクラシックシンガー。', '2023-09-06 14:16:47.175482',
+        '2023-09-06 14:16:47.175482'),
+       (11, 'Grace Kim', '1995-06-01', '韓国のK-POPグループのリーダーとして活動。', '2023-09-06 14:16:47.175482',
+        '2023-09-06 14:16:47.175482'),
+       (12, 'Oscar Santos', '1978-10-10', 'ブラジルのサンバミュージシャン。カーニバルの常連アーティスト。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (13, 'Anna Schmidt', '1985-01-01', 'ドイツのクラシックヴァイオリニスト。ヨーロッパでの公演歴多数。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (14, 'Lucas Dupont', '1993-03-03', 'フランス出身の電子音楽プロデューサー。', '2023-09-06 14:16:47.175482',
+        '2023-09-06 14:16:47.175482'),
+       (15, 'Alyssa Martinez', '1990-05-05', 'アメリカのカントリーミュージシャン。南部でのライブが人気。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (16, 'Ibrahim Alizadeh', '1982-02-15', 'トルコのフォークミュージシャン。伝統楽器の名手。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (17, 'Olga Petrov', '1994-04-04', 'ロシアのバレエダンサーであり、オペラシンガー。', '2023-09-06 14:16:47.175482',
+        '2023-09-06 14:16:47.175482'),
+       (18, 'Lars Olsson', '1977-11-11', 'スウェーデンのインディーロックアーティスト。ヨーロッパツアーを成功させる。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482'),
+       (19, 'Chiara Ferragni', '1996-09-09',
+        'イタリア出身のフォークシンガー。アコースティックギターを取り入れた楽曲が特徴。', '2023-09-06 14:16:47.175482',
+        '2023-09-06 14:16:47.175482');
+INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at)
+VALUES (1, 'Derek and the Dominos', '1970-01-01', 'Eric Claptonをフロントマンとした短命ながらも評価の高いロックバンド。',
+        '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482');
+INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at)
+VALUES (2, 'Blind Faith', '1969-01-01',
+        'Eric Clapton, Steve Winwood, Ginger Baker, Ric Grechによって結成された英国のスーパーグループ。',
+        '2023-09-06 14:18:16.08347', '2023-09-06 14:18:16.08347');
+INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at)
+VALUES (5, 'Led Zeppelin', '1968-10-01', '1960年代後半から1970年代にかけて活動し、ロックの歴史に名を刻んだバンド。',
+        '2023-09-06 14:21:39.615357', '2023-09-06 14:21:39.615357');
+INSERT INTO public.bands (id, name, formation_date, bio, created_at, updated_at)
+VALUES (6, 'The Jeff Beck Group', '1967-01-01',
+        'ジェフ・ベックがリーダーとなり、1960年代後半に活動した英国のロックバンド。', '2023-09-06 14:21:39.615357',
+        '2023-09-06 14:21:39.615357');
+INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at)
+VALUES (1, 1, '1970-01-01', NULL, 'ギター & ボーカル', '2023-09-06 14:16:47.175482', '2023-09-06 14:16:47.175482');
+INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at)
+VALUES (2, 1, '1969-01-01', NULL, 'ギター & ボーカル', '2023-09-06 14:18:16.08347', '2023-09-06 14:18:16.08347');
+INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at)
+VALUES (5, 4, '1968-10-01', NULL, 'ギター', '2023-09-06 14:23:05.398178', '2023-09-06 14:23:05.398178');
+INSERT INTO public.band_members (band_id, artist_id, join_date, leave_date, role, created_at, updated_at)
+VALUES (6, 5, '1967-01-01', NULL, 'ギター', '2023-09-06 14:23:05.398178', '2023-09-06 14:23:05.398178');
 SELECT pg_catalog.setval('public.artists_id_seq', 5, true);
 SELECT pg_catalog.setval('public.bands_id_seq', 6, true);

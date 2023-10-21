@@ -1,12 +1,18 @@
 import { graphql } from 'relay-runtime';
-import { useFragment } from 'react-relay';
+import { usePaginationFragment } from 'react-relay';
 import { ArtistListFragment$key } from './__generated__/ArtistListFragment.graphql';
-import { UnorderedList } from '@chakra-ui/react';
+import { Button, Stack, UnorderedList } from '@chakra-ui/react';
 import { ArtistListItem } from './ArtistListItem';
 
 const ArtistListFragment = graphql`
-  fragment ArtistListFragment on query_root {
-    artists_connection(order_by: { id: asc }) {
+  fragment ArtistListFragment on query_root
+  @argumentDefinitions(
+    cursor: { type: "String" }
+    count: { type: "Int", defaultValue: 5 }
+  )
+  @refetchable(queryName: "ArtistListFragmentQuery") {
+    artists_connection(first: $count, after: $cursor)
+      @connection(key: "ArtistListFragment_artists_connection") {
       edges {
         node {
           id
@@ -22,13 +28,24 @@ type Props = {
 };
 
 export function ArtistList(props: Props) {
-  const results = useFragment(ArtistListFragment, props.fragmentRef);
+  const { data, hasNext, loadNext } = usePaginationFragment(
+    ArtistListFragment,
+    props.fragmentRef
+  );
+
+  const handleClickMore = () => {
+    loadNext(5);
+  };
 
   return (
-    <UnorderedList>
-      {results.artists_connection.edges.map((edge) => (
-        <ArtistListItem fragmentRef={edge.node} key={edge.node.id} />
-      ))}
-    </UnorderedList>
+    <Stack spacing={4} m={10}>
+      <UnorderedList>
+        {data.artists_connection.edges.map((edge) => (
+          <ArtistListItem fragmentRef={edge.node} key={edge.node.id} />
+        ))}
+      </UnorderedList>
+
+      {hasNext && <Button onClick={handleClickMore}>More</Button>}
+    </Stack>
   );
 }

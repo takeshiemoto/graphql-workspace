@@ -16,10 +16,15 @@ const ArtistListItemFragment = graphql`
 
 type Props = {
   fragmentRef: ArtistListItemFragment$key;
+  onClick: (id: string) => void;
 };
 
 export function ArtistListItem(props: Props) {
-  const { name } = useFragment(ArtistListItemFragment, props.fragmentRef);
+  const { name, id } = useFragment(ArtistListItemFragment, props.fragmentRef);
 
-  return <ListItem>{name}</ListItem>;
+  const handleClick = () => {
+    props.onClick(id);
+  };
+
+  return <ListItem onClick={handleClick}>{name}</ListItem>;
 }

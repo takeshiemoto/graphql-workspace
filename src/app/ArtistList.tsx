@@ -3,6 +3,8 @@ import { usePaginationFragment } from 'react-relay';
 import { ArtistListFragment$key } from './__generated__/ArtistListFragment.graphql';
 import { Button, Stack, UnorderedList } from '@chakra-ui/react';
 import { ArtistListItem } from './ArtistListItem';
+import { useState } from 'react';
+import { ArtistDetail } from './ArtistDetail';
 
 const ArtistListFragment = graphql`
   fragment ArtistListFragment on query_root
@@ -28,6 +30,10 @@ type Props = {
 };
 
 export function ArtistList(props: Props) {
+  const [selectedArtistId, setSelectedArtistId] = useState<string | undefined>(
+    undefined
+  );
+
   const { data, hasNext, loadNext } = usePaginationFragment(
     ArtistListFragment,
     props.fragmentRef
@@ -37,13 +43,23 @@ export function ArtistList(props: Props) {
     loadNext(5);
   };
 
+  const handleArtistClick = (id: string) => {
+    setSelectedArtistId(id);
+  };
+
   return (
-    <Stack spacing={4} m={10}>
+    <Stack spacing={4}>
       <UnorderedList>
         {data.artists_connection.edges.map((edge) => (
-          <ArtistListItem fragmentRef={edge.node} key={edge.node.id} />
+          <ArtistListItem
+            fragmentRef={edge.node}
+            key={edge.node.id}
+            onClick={handleArtistClick}
+          />
         ))}
       </UnorderedList>
+
+      {selectedArtistId && <ArtistDetail id={selectedArtistId} />}
 
       {hasNext && <Button onClick={handleClickMore}>More</Button>}
     </Stack>

@@ -43,7 +43,7 @@ export function BandList(props: Props) {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     startTransition(() => {
-      const name = `%${e.target.value}%`;
+      const name = e.target.value ? `%${e.target.value}%` : '';
       refetch({ name });
     });
   };

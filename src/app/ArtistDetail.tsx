@@ -1,6 +1,7 @@
 import { graphql } from 'relay-runtime';
 import { useLazyLoadQuery } from 'react-relay';
 import { ArtistDetailQuery as QueryType } from './__generated__/ArtistDetailQuery.graphql';
+import { BandMemberList } from './BandMemberList';
 
 const ArtistDetailQuery = graphql`
   query ArtistDetailQuery($id: ID!) {
@@ -8,6 +9,7 @@ const ArtistDetailQuery = graphql`
       ... on artists {
         id
         name
+        ...BandMemberListFragment
       }
     }
   }
@@ -26,5 +28,10 @@ export function ArtistDetail(props: Props) {
     return null;
   }
 
-  return <div>{result.node.name}</div>;
+  return (
+    <div>
+      {result.node.name}
+      <BandMemberList fragmentRef={result.node} />
+    </div>
+  );
 }
